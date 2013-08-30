@@ -25,17 +25,21 @@ function say_something_sortiecat_would_say()
 join_channel '#osdev-offtopic'
 
 TALK=yes
+COUNT=0
 
-(
-  (while sleep $(($RANDOM%(5*60))); do echo speak; done) &
-  (while sleep $((30*60)); do echo talk_on; done) &
-  (sleep $((20*30)); while sleep $((30*60)); do echo talk_off; done) &
-  (while read LINE; do test -n "$(echo "$LINE" | cut -d ':' -f 2- | cut -d ' ' -f 5- | grep 'sortietac')" && echo speak; done) &
-) | while read EVENT; do
-  case "$EVENT" in
-    speak) test -n "$TALK" && say_something_sortiecat_would_say ;;
-    talk_on) TALK=yes ;;
-    talk_off) TALK= ;;
-    *) echo "Unhandled event: '$EVENT'" ;;
-  esac
+while true
+do
+	say_something_sortiecat_would_say
+	sleep $(($RANDOM%(10*60)))
+	if test $COUNT -lt 30
+	then
+		COUNT=$(($COUNT+1))
+	else
+		if test -n "$TALK"
+		then
+			TALK=
+		else
+			TALK=yes
+		fi
+	fi
 done
