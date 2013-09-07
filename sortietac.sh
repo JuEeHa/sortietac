@@ -29,7 +29,7 @@ COUNT=0
 
 while true
 do
-	say_something_sortiecat_would_say
+	test -n "$TALK" && say_something_sortiecat_would_say
 	sleep $(($RANDOM%(10*60)))
 	if test $COUNT -lt 30
 	then
@@ -41,5 +41,6 @@ do
 		else
 			TALK=yes
 		fi
+		COUNT=0
 	fi
 done
